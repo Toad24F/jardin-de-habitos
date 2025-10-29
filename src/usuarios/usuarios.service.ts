@@ -33,6 +33,16 @@ export class UsuariosService {
     return await this.usuariosRepository.find();
   }
 
+  async findOneByEmail(email: string) {
+    // Usamos 'addSelect' para incluir el password,
+    // que por defecto está oculto en la entidad.
+    return this.usuariosRepository
+      .createQueryBuilder('usuario')
+      .where('usuario.email = :email', { email })
+      .addSelect('usuario.password')
+      .getOne();
+  }
+  
   async findOne(id: number): Promise<Usuario> {
     const usuario = await this.usuariosRepository.findOneBy({ id });
     if (!usuario) throw new NotFoundException(`Usuario con id ${id} no encontrado`);
