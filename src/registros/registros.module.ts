@@ -3,11 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RegistrosService } from './registros.service';
 import { RegistrosController } from './registros.controller';
 import { RegistroDia } from './entities/registro.entity';
-import { Habito } from 'src/habitos/entities/habito.entity'; // Necesario para la lógica de la mata
+import { Habito } from 'src/habitos/entities/habito.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([RegistroDia, Habito]) // Importar ambas entidades
+    TypeOrmModule.forFeature([RegistroDia, Habito])
   ],
   controllers: [RegistrosController],
   providers: [RegistrosService],

@@ -16,7 +16,7 @@ export class RegistrosService {
   ) {}
 
   /**
-   * Registra el seguimiento diario de un hábito y actualiza la lógica de la "mata".
+   * Registra el seguimiento diario de un hábito y actualiza la lógica de la mata.
    * @param createRegistroDiaDto Datos del formulario de registro.
    * @param idUsuario ID del usuario autenticado.
    */
@@ -38,6 +38,7 @@ export class RegistrosService {
     // Nota: Por simplicidad, asumimos "hoy" como una fecha sin hora.
     const today = new Date().toISOString().split('T')[0];
     
+    //Esto esta comentado pero es la manera de no poder crear dos registros en el mismo dia
     /*
     *  const registroExistente = await this.registroDiaRepository
     *    .createQueryBuilder('registro')
@@ -76,31 +77,31 @@ export class RegistrosService {
     let nuevaEtapa = habito.etapa_mata;
     let nuevoCalificador = habito.calificador_crecimiento;
 
-    // --- LÓGICA DE FALLO (veces_realizadas = 0) ---
+    // --- LÓGICA DE EXITO (veces_realizadas = 0) ---
     if (vecesRealizadas === 0) {
         // Aumentar el calificador (hasta 3)
         nuevoCalificador = nuevoCalificador + 1;
         
         if (nuevoCalificador > 3) {
-            // Reiniciar el calificador y aumentar la etapa (decaer la mata)
-            nuevoCalificador = 1; // Reiniciar a 1 (listo para el próximo fallo)
+            // Reiniciar el calificador y aumentar la etapa (la mata crece)
+            nuevoCalificador = 1; // Reiniciar a 1 
             if (nuevaEtapa < 10) {
-              nuevaEtapa = nuevaEtapa + 1; // La etapa de la mata se resta en 1, mínimo 1
+              nuevaEtapa = nuevaEtapa + 1; // La etapa de la mata se suma en 1
             } else {
-              nuevaEtapa = 10; // Aseguramos que la etapa mínima es 1 (Semilla)
+              nuevaEtapa = 10; // Aseguramos que la etapa maxima es 10 
             }
         }
     } 
-    // --- LÓGICA DE ÉXITO (veces_realizadas > 0) ---
+    // --- LÓGICA DE FALLO(veces_realizadas > 0) ---
     else {
         // Reducir el calificador (hasta 0)
         nuevoCalificador = nuevoCalificador - 1;
 
         if (nuevoCalificador > 0) {
-            // Reiniciar el calificador y aumentar la etapa (crecer la mata)
-            nuevoCalificador = 3; // Reiniciar a 3 (listo para el próximo éxito)
+            // Reiniciar el calificador y reducir una etapa (la mata decae)
+            nuevoCalificador = 3; // Reiniciar a 3 
             if (nuevaEtapa > 1) {
-              nuevaEtapa = nuevaEtapa - 1; // La etapa de la mata se resta en 1, mínimo 1
+              nuevaEtapa = nuevaEtapa - 1; // La etapa de la mata se resta en 1
             } else {
               nuevaEtapa = 1; // Aseguramos que la etapa mínima es 1 (Semilla)
             }

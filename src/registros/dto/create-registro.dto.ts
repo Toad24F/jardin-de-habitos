@@ -8,7 +8,7 @@ export class CreateRegistroDiaDto {
   @IsInt()
   @IsNotEmpty({ message: 'Indica cuántas veces se realizó el hábito.' })
   @Min(0, { message: 'Las veces realizadas deben ser al menos 0.' })
-  veces_realizadas: number;
+  veces_realizadas: number; // Cuántas veces lo hiciste ese día
 
   @IsOptional()
   @IsString()
@@ -25,8 +25,5 @@ export class CreateRegistroDiaDto {
   @Min(1, { message: 'La dificultad debe ser al menos 1.' })
   @Max(5, { message: 'La dificultad no debe ser mayor a 5.' }) // Asumimos una escala de 1 a 5
   dificultad: number;
-
-
-  // La fecha de hoy la manejaremos en el Service/Controller para asegurar precisión y evitar manipulación
   
 }

@@ -17,7 +17,6 @@ export class RegistroDia {
   id: string;
 
   // Fecha del registro. Usamos Date para almacenar solo el día (sin hora).
-  // Es importante que este campo sea preciso para asegurar un registro por día.
   @Column({ type: 'date' })
   fecha: Date;
 
@@ -33,7 +32,7 @@ export class RegistroDia {
   @Column({ type: 'text', nullable: true })
   motivo: string;
 
-  // Qué tan difícil fue (e.g., escala del 1 al 5).
+  // Qué tan difícil fue 
   @Column({ type: 'int' })
   dificultad: number;
 
