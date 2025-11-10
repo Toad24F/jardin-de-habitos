@@ -3,8 +3,8 @@ import { Habito } from 'src/habitos/entities/habito.entity';
 @Entity() // Le dice a TypeORM que esta clase es una tabla de BD
 export class Usuario {
   
-  @PrimaryGeneratedColumn() // Crea una columna "id" autoincremental (1, 2, 3...)
-  id: number;
+  @PrimaryGeneratedColumn("uuid") // Crea una columna "uuid" como clave primaria
+  id: string; 
 
   @Column() // Crea una columna de tipo "varchar" (texto)
   nombre: string;

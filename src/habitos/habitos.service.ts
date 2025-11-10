@@ -18,7 +18,7 @@ export class HabitosService {
    * @param createHabitoDto Datos del hábito (nombre, frecuencia, notas)
    * @param idUsuario ID del usuario (extraído del token)
    */
-  async create(createHabitoDto: CreateHabitoDto, idUsuario: number): Promise<Habito> {
+  async create(createHabitoDto: CreateHabitoDto, idUsuario: string): Promise<Habito> {
     
     //Creamos una instancia de la entidad con los datos
     const nuevoHabito = this.habitoRepository.create({
@@ -35,7 +35,7 @@ export class HabitosService {
    * @param idUsuario ID del usuario para filtrar los hábitos.
    * @returns Una lista de entidades Habito.
    */
-  async findAll(idUsuario: number): Promise<Habito[]> {
+  async findAll(idUsuario: string): Promise<Habito[]> {
     // Usamos el método find() del repositorio de TypeORM
     // y aplicamos una condición 'where' para filtrar por el ID del usuario
     return this.habitoRepository.find({
@@ -51,7 +51,7 @@ export class HabitosService {
      * @param idUsuario ID del usuario autenticado (para verificar la propiedad).
      * @returns Los datos del hábito.
      */
-    async findOne(idHabito: string, idUsuario: number): Promise<Habito> {
+    async findOne(idHabito: string, idUsuario: string): Promise<Habito> {
         
         // 1. Usa findOneBy para buscar un solo resultado.
         // 2. Filtra por id (del hábito) Y por id_usuario.
@@ -68,11 +68,11 @@ export class HabitosService {
         return habito; // Retorna el objeto Habito
     }
 
-  update(id: number, updateHabitoDto: UpdateHabitoDto) {
+  update(id: string, updateHabitoDto: UpdateHabitoDto) {
     return `This action updates a #${id} habito`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} habito`;
   }
 }

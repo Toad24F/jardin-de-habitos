@@ -50,11 +50,11 @@ export class HabitosController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateHabitoDto: UpdateHabitoDto) {
-    return this.habitosService.update(+id, updateHabitoDto);
+    return this.habitosService.update(id, updateHabitoDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.habitosService.remove(+id);
+    return this.habitosService.remove(id);
   }
 }

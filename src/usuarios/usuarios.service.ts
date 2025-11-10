@@ -58,20 +58,20 @@ export class UsuariosService {
       .getOne();
   }
   
-  async findOne(id: number): Promise<Usuario> {
+  async findOne(id: string): Promise<Usuario> {
     const usuario = await this.usuariosRepository.findOneBy({ id });
     if (!usuario) throw new NotFoundException(`Usuario con id ${id} no encontrado`);
     return usuario;
   }
 
-  async update(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
+  async update(id: string, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
     // mejor usar preload para combinar y validar existencia
     const usuario = await this.usuariosRepository.preload({ id, ...updateUsuarioDto });
     if (!usuario) throw new NotFoundException(`Usuario con id ${id} no encontrado`);
     return this.usuariosRepository.save(usuario);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const result = await this.usuariosRepository.delete(id);
     if (result.affected === 0) throw new NotFoundException(`Usuario con id ${id} no encontrado`);
   }
