@@ -51,4 +51,7 @@ export class RegistroDia {
   @ManyToOne(() => Usuario, { eager: false }) // Relación solo para asegurar la propiedad
   @JoinColumn({ name: 'id_usuario' }) // Especifica que 'id_usuario' es el FK
   usuario: Usuario;
+  
+  @Column({ type: 'int',nullable: true }) //Columna que guarda como le fue el habito ese dia
+  estado: number;
 }

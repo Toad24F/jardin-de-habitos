@@ -23,6 +23,7 @@ export class RegistrosService {
   async create(createRegistroDiaDto: CreateRegistroDiaDto, idUsuario: string): Promise<RegistroDia> {
     
     const { id_habito, veces_realizadas } = createRegistroDiaDto;
+
     
     // 1. Verificar si el hábito existe y pertenece al usuario (seguridad)
     const habito = await this.habitoRepository.findOneBy({ 
@@ -32,7 +33,8 @@ export class RegistrosService {
     if (!habito) {
         throw new NotFoundException(`Hábito con ID ${id_habito} no encontrado o no pertenece al usuario.`);
     }
-
+    let frecuencia = habito.frecuencia_diaria;
+    let estado = 0;
     // 2. Comprobar si ya existe un registro para hoy (Prevención de duplicados)
     // Nota: Por simplicidad, asumimos "hoy" como una fecha sin hora.
     const today = new Date().toISOString().split('T')[0];
@@ -50,10 +52,22 @@ export class RegistrosService {
     *}
     */
     // 3. Crear el nuevo registro diario
+        switch (true) {
+      case veces_realizadas >= frecuencia:
+        estado = 1; // Mal
+        break;
+      case veces_realizadas < frecuencia && veces_realizadas > 0:
+        estado = 2; // Regular
+        break;
+      case veces_realizadas === 0:
+        estado = 3; // Bien
+        break;
+    }
     const nuevoRegistro = this.registroDiaRepository.create({
         ...createRegistroDiaDto,
         id_usuario: idUsuario,
         fecha: new Date(today), // Guardamos la fecha limpia
+        estado: estado,
     });
     const registroGuardado = await this.registroDiaRepository.save(nuevoRegistro);
     
@@ -71,6 +85,7 @@ export class RegistrosService {
     
     // Usamos variables para los nuevos valores
     let nuevaEtapa = habito.etapa_mata;
+
     let nuevoCalificador = habito.calificador_crecimiento;
     // --- LÓGICA DE EXITO (veces_realizadas = 0) ---
     if (vecesRealizadas === 0) {
@@ -91,7 +106,7 @@ export class RegistrosService {
     else {
         // Reducir el calificador (hasta 0)
         nuevoCalificador = nuevoCalificador - 1;
-        if (nuevoCalificador > 0) {
+        if (nuevoCalificador < 0) {
             // Reiniciar el calificador y reducir una etapa (la mata decae)
             nuevoCalificador = 3; // Reiniciar a 3 
             if (nuevaEtapa > 1) {
